@@ -1,16 +1,16 @@
-const TRANSPORT = "http"; // "http" or "ws"
+const TRANSPORT = 'http'; // 'http' or 'ws'
 const STATIC_PORT = 8000;
 const API_PORT = 8001;
 const HASH_SALT_SIZE = 16;
 const HASH_SIZE = 64;
-const LOGS_PATH = "./log";
+const LOGS_PATH = './log';
 
 // Database config
-const DB_HOST = "127.0.0.1";
+const DB_HOST = '127.0.0.1';
 const DB_PORT = 5432;
-const DB_NAME = "example";
-const DB_USER = "marcus";
-const DB_PASSWORD = "password";
+const DB_NAME = 'example';
+const DB_USER = 'marcus';
+const DB_PASSWORD = 'password';
 
 module.exports = {
   TRANSPORT,
