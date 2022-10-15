@@ -12,6 +12,7 @@ const adapter = (routing) => {
   for (let serviceName of services) {
     const service = routing[serviceName];
     const methods = Object.keys(service);
+
     for (const methodName of methods) {
       const handler = routing[serviceName][methodName];
       const src = handler.toString();
