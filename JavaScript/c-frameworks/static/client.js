@@ -22,7 +22,7 @@ const createMethodHttp = (serviceName, methodName, parameters) => (...args) =>
         reject(new Error(`Status Code: ${status}`));
         return;
       }
-      const isJson = res.headers.get('Content-Type') === 'application/json';
+      const isJson = res.headers.get('Content-Type')?.includes('application/json');
       resolve(isJson ? res.json() : res.text());
     });
   });
