@@ -21,7 +21,7 @@ const receiveArgs = async (req) => {
   return JSON.parse(data);
 };
 
-module.exports = (routing, port) => {
+module.exports = (routing, port, console) => {
   http.createServer(async (req, res) => {
     if (req.method === 'OPTIONS') {
       res.writeHead(204, headers).end();
@@ -40,9 +40,9 @@ module.exports = (routing, port) => {
     const args = [];
     if (signature.includes('(id')) args.push(id);
     if (signature.includes('{')) args.push(await receiveArgs(req));
-    console.log(`${socket.remoteAddress} ${method} ${url} ${JSON.stringify(args)}`);
+    console.log(`${socket.remoteAddress} ${method} ${url} ${args}`);
     const result = await handler(...args);
-    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'application/json; charset=UTF-8');
     res.end(JSON.stringify(result.rows));
   }).listen(port);
 

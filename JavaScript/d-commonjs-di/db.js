@@ -1,17 +1,8 @@
 'use strict';
 
-const { DB_USER, DB_PASSWORD, DB_PORT, DB_HOST, DB_NAME } = require('./config');
 const pg = require('pg');
 
-const pool = new pg.Pool({
-  host: DB_HOST,
-  port: DB_PORT,
-  database: DB_NAME,
-  user: DB_USER,
-  password: DB_PASSWORD,
-});
-
-module.exports = (table) => ({
+const generateApi = (pool) => (table) => ({
   query(sql, args) {
     return pool.query(sql, args);
   },
@@ -58,3 +49,5 @@ module.exports = (table) => ({
     return pool.query(sql, [id]);
   },
 });
+
+module.exports = (options) => generateApi(new pg.Pool(options));
