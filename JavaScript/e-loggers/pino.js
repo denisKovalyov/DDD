@@ -1,4 +1,3 @@
-const { LOGS_PATH, LOG_LEVEL } = require('./config');
 const path = require('node:path');
 const fs = require('node:fs');
 const util = require('node:util');
@@ -14,36 +13,34 @@ const levels = {
   access: 70,
 };
 
-const date = new Date().toISOString().substring(0, 10);
-const filePath = path.join(LOGS_PATH, `${date}.log`);
+module.exports = ({ logsPath, level }) => {
+  const date = new Date().toISOString().substring(0, 10);
+  const filePath = path.join(logsPath, `${date}.log`);
 
-if (!fs.existsSync(LOGS_PATH)){
-  fs.mkdirSync(LOGS_PATH);
-};
+  if (!fs.existsSync(logsPath)){
+    fs.mkdirSync(logsPath);
+  };
 
-const streams = [
-  { stream: pretty(), level: 'debug' },
-  { stream: fs.createWriteStream(filePath, { flags: 'a' }), level: 'debug' },
-];
+  const streams = [
+    { stream: pretty(), level: 'debug' },
+    { stream: fs.createWriteStream(filePath, { flags: 'a' }), level: 'debug' },
+  ];
 
-const logger = pino({
-    level: LOG_LEVEL || 'debug',
+  return pino({
+    level: level || 'debug',
     customLevels: levels,
     useOnlyCustomLevels: true,
     formatters: {
       level: (label) => {
         return { level: label === 'log' ? 'info' : label };
       },
-
     },
     hooks: {
       logMethod (args, method) {
         const message = util.format(...args);
         return method.call(this, message);
       },
-    },
-  },
-  pino.multistream(streams, { levels }),
-);
-
-module.exports = logger;
+    }},
+    pino.multistream(streams, { levels }),
+  );
+};

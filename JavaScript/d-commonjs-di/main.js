@@ -1,14 +1,13 @@
 'use strict';
 
-const { TRANSPORT, FRAMEWORK, STATIC_PORT, API_PORT } = require('./config');
-
+const { framework, transport, staticPort, apiPort, ...config } = require('./config');
 const fsp = require('node:fs').promises;
 const path = require('node:path');
-const server = require(FRAMEWORK === 'native' ? `./${TRANSPORT}.js` : `./${FRAMEWORK}.js`);
+const server = require(framework === 'native' ? `./${transport}.js` : `./${framework}.js`);
 const staticServer = require('./static.js');
-const db = require('./db.js');
-const hash = require('./hash.js');
-const logger = require('./logger.js');
+const db = require('./db.js')(config.db);
+const hash = require('./hash.js')(config.crypto);
+const logger = require('./logger.js')(config.logger);
 
 const sandbox = {
   console: Object.freeze(logger),
@@ -24,8 +23,9 @@ const routing = {};
     if (!fileName.endsWith('.js')) continue;
     const filePath = path.join(apiPath, fileName);
     const serviceName = path.basename(fileName, '.js');
-    routing[serviceName] = require(filePath)(sandbox);
+    routing[serviceName] = await require(filePath)(sandbox);
   }
-  staticServer('./static', STATIC_PORT);
-  server(routing, API_PORT);
+
+  staticServer('./static', staticPort);
+  server(routing, apiPort);
 })();

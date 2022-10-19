@@ -68,7 +68,7 @@ const scaffold = (url, structure) => {
   return api;
 };
 
-const api = scaffold(TRANSPORT.HTTP, {
+const api = scaffold(TRANSPORT.WS, {
   user: {
     create: ['record'],
     read: ['id'],

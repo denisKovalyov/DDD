@@ -1,6 +1,5 @@
 'use strict';
 
-const { LOGS_PATH } = require('./config.js');
 const fs = require('node:fs');
 const util = require('node:util');
 const path = require('node:path');
@@ -16,14 +15,14 @@ const COLORS = {
 const DATETIME_LENGTH = 19;
 
 class Logger {
-  constructor(logPath) {
-    if (!fs.existsSync(logPath)){
-      fs.mkdirSync(logPath);
+  constructor({ logsPath }) {
+    if (!fs.existsSync(logsPath)){
+      fs.mkdirSync(logsPath);
     }
 
-    this.path = logPath;
+    this.path = logsPath;
     const date = new Date().toISOString().substring(0, 10);
-    const filePath = path.join(logPath, `${date}.log`);
+    const filePath = path.join(logsPath, `${date}.log`);
     this.stream = fs.createWriteStream(filePath, { flags: 'a' });
     this.regexp = new RegExp(path.dirname(this.path), 'g');
   }
@@ -73,4 +72,4 @@ class Logger {
   }
 }
 
-module.exports = new Logger(LOGS_PATH);
+module.exports = (options) => new Logger(options);
