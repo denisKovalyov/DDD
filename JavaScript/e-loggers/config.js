@@ -12,7 +12,7 @@ module.exports = {
     displayErrors: true,
   },
   logger: {
-    loggerName: 'pino', // 'logger' or 'pino',
+    loggerName: 'native', // 'native', 'logger' or 'pino',
     logsPath: './log',
     level: 'debug',
   },

@@ -15,7 +15,7 @@ const staticServer = require('./static.js');
 const load = require('./load.js')(config.sandbox);
 const db = require('./db.js')(config.db);
 const hash = require('./hash.js')(config.crypto);
-const logger = require(`./${loggerName}.js`)(loggerConfig);
+const logger = loggerName === 'native' ? console : require(`./${loggerName}.js`)(loggerConfig);
 
 const sandbox = {
   console: Object.freeze(logger),
