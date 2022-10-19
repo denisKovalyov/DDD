@@ -23,7 +23,7 @@ const createMethodHttp = (serviceName, methodName, parameters) => (...args) =>
         return;
       }
       const isJson = res.headers.get('Content-Type')?.includes('application/json');
-      resolve(isJson ? res.json() : res.text());
+      resolve(isJson ? res.json() : res.json());
     });
   });
 

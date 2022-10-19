@@ -22,8 +22,8 @@ const createMethodHttp = (serviceName, methodName, parameters) => (...args) =>
         reject(new Error(`Status Code: ${status}`));
         return;
       }
-      const isJson = res.headers.get('Content-Type') === 'application/json';
-      resolve(isJson ? res.json() : res.text());
+      const isJson = res.headers.get('Content-Type')?.includes('application/json');
+      resolve(isJson ? res.json() : res.json());
     });
   });
 

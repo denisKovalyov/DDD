@@ -3,7 +3,7 @@
 const { transport, staticPort, apiPort, ...config } = require('./config');
 const fsp = require('node:fs').promises;
 const path = require('node:path');
-const server = require(`./${transport}.js`);
+const server = require(`./transport/${transport}.js`);
 const staticServer = require('./static.js');
 const load = require('./load.js')(config.sandbox);
 const db = require('./db.js')(config.db);
@@ -27,6 +27,6 @@ const routing = {};
     routing[serviceName] = await load(filePath, sandbox);
   }
 
-  staticServer('./static', staticPort);
-  server(routing, apiPort);
+  staticServer('./static', staticPort, logger);
+  server(routing, apiPort, logger);
 })();

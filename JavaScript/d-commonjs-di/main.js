@@ -3,7 +3,7 @@
 const { framework, transport, staticPort, apiPort, ...config } = require('./config');
 const fsp = require('node:fs').promises;
 const path = require('node:path');
-const server = require(framework === 'native' ? `./${transport}.js` : `./${framework}.js`);
+const server = require(framework === 'native' ? `./transport/${transport}.js` : `./${framework}.js`);
 const staticServer = require('./static.js');
 const db = require('./db.js')(config.db);
 const hash = require('./hash.js')(config.crypto);
@@ -26,6 +26,6 @@ const routing = {};
     routing[serviceName] = await require(filePath)(sandbox);
   }
 
-  staticServer('./static', staticPort);
-  server(routing, apiPort);
+  staticServer('./static', staticPort, logger);
+  server(routing, apiPort, logger);
 })();
