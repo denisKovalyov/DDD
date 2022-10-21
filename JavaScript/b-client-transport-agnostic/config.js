@@ -1,23 +1,23 @@
 module.exports = {
-  transport: 'http', // 'http' or 'ws'
-  staticPort: 8000,
-  apiPort: 8001,
-  crypto: {
-    saltSize: 16,
-    hashSize: 64,
+  TRANSPORT: 'http', // 'http' or 'ws'
+  STATIC_PORT: 8000,
+  API_PORT: 8001,
+  CRYPTO: {
+    SALT_SIZE: 16,
+    HASH_SIZE: 64,
   },
-  sandbox: {
-    timeout: 5000,
-    displayErrors: true,
+  SANDBOX: {
+    TIMEOUT: 5000,
+    DISPLAY_ERRORS: true,
   },
-  logger: {
-    logsPath: './log',
+  LOGGER: {
+    LOGS_PATH: './log',
   },
-  db: {
-    host: '127.0.0.1',
-    port: 5432,
-    database: 'example',
-    user: 'marcus',
-    password: 'marcus',
+  DB: {
+    HOST: '127.0.0.1',
+    PORT: 5432,
+    DATABASE: 'example',
+    USER: 'marcus',
+    PASSWORD: 'marcus',
   },
 };

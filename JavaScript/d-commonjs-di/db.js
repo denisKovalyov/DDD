@@ -50,4 +50,10 @@ const generateApi = (pool) => (table) => ({
   },
 });
 
-module.exports = (options) => generateApi(new pg.Pool(options));
+module.exports = ({ HOST, PORT, DATABASE, USER, PASSWORD }) => generateApi(new pg.Pool({
+  host: HOST,
+  port: PORT,
+  database: DATABASE,
+  user: USER,
+  password: PASSWORD,
+}));

@@ -13,12 +13,12 @@ const levels = {
   access: 70,
 };
 
-module.exports = ({ logsPath, level }) => {
+module.exports = ({ LOGS_PATH, LOGS_LEVEL }) => {
   const date = new Date().toISOString().substring(0, 10);
-  const filePath = path.join(logsPath, `${date}.log`);
+  const filePath = path.join(LOGS_PATH, `${date}.log`);
 
-  if (!fs.existsSync(logsPath)){
-    fs.mkdirSync(logsPath);
+  if (!fs.existsSync(LOGS_PATH)){
+    fs.mkdirSync(LOGS_PATH);
   };
 
   const streams = [
@@ -27,7 +27,7 @@ module.exports = ({ logsPath, level }) => {
   ];
 
   return pino({
-    level: level || 'debug',
+    level: LOGS_LEVEL || 'debug',
     customLevels: levels,
     useOnlyCustomLevels: true,
     formatters: {
