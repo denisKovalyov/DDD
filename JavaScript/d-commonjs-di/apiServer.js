@@ -22,13 +22,13 @@ module.exports = async ({ framework, transport, routing, port, console }) => {
       require(frameworkPath)(routing, port, console);
       return;
     }
-  };
+  }
 
   const transports = await getFilesCollection('./transport');
   const transportPath = transports[transport];
   if (!transportPath) {
     console.error('Transport not found');
-    return;
+    process.exit(1);
   }
   require(transportPath)(routing, port, console);
 };
