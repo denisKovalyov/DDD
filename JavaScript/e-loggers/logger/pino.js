@@ -26,7 +26,7 @@ module.exports = ({ LOGS_PATH, LOGS_LEVEL }) => {
     { stream: fs.createWriteStream(filePath, { flags: 'a' }), level: 'debug' },
   ];
 
-  return pino({
+  const logger = pino({
     level: LOGS_LEVEL || 'debug',
     customLevels: levels,
     useOnlyCustomLevels: true,
@@ -43,4 +43,8 @@ module.exports = ({ LOGS_PATH, LOGS_LEVEL }) => {
     }},
     pino.multistream(streams, { levels }),
   );
+
+  logger.close = () => new Promise((resolve) => streams[1].stream.end(resolve));
+
+  return logger;
 };
