@@ -1,6 +1,6 @@
 'use strict';
 
-const { TRANSPORT, STATIC_PORT, API_PORT, ...CONFIG } = require('./config');
+const { TRANSPORT, STATIC_PORT, API, ...CONFIG} = require('./config');
 
 const fsp = require('node:fs').promises;
 const path = require('node:path');
@@ -28,6 +28,7 @@ const routing = {};
     routing[serviceName] = await load(filePath, sandbox);
   }
 
-  staticServer('./static', STATIC_PORT, logger);
-  server(routing, API_PORT, logger);
+  const API_ORIGIN = `${TRANSPORT}://${API.HOST}:${API.PORT}`;
+  staticServer('./static', STATIC_PORT, API_ORIGIN, logger);
+  server(routing, API.PORT, logger);
 })();

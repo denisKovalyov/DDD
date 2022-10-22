@@ -2,7 +2,7 @@
 
 const http = require('node:http');
 const path = require('node:path');
-const fs = require('node:fs');
+const fsp = require('node:fs').promises;
 
 const MIME_TYPES = {
   html: 'text/html; charset=UTF-8',
@@ -23,12 +23,17 @@ const HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-module.exports = (root, port, console) => {
+module.exports = async (root, port, url, console) => {
+  const filePath = path.join(process.cwd(), './static/client.js');
+  const data = await fsp.readFile(filePath, 'utf8');
+  const clientJs = data.replace(/const API_URL = '.*';/, `const API_URL = '${url}';`)
+  await fsp.writeFile(filePath, clientJs, 'utf8')
+
   http.createServer(async (req, res) => {
     const url = req.url === '/' ? '/index.html' : req.url;
     const filePath = path.join(root, url);
     try {
-      const data = await fs.promises.readFile(filePath);
+      const data = await fsp.readFile(filePath);
       const fileExt = path.extname(filePath).substring(1);
       const mimeType = MIME_TYPES[fileExt] || MIME_TYPES.html;
       res.writeHead(200, { ...HEADERS, 'Content-Type': mimeType });

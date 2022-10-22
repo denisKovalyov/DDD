@@ -2,7 +2,10 @@ module.exports = {
   TRANSPORT: 'http', // 'http' or 'ws'
   FRAMEWORK: 'fastify', // 'native' or 'fastify'
   STATIC_PORT: 8000,
-  API_PORT: 8001,
+  API: {
+    PORT: 8001,
+    HOST: '127.0.0.1',
+  },
   CRYPTO: {
     SALT_SIZE: 16,
     HASH_SIZE: 64,
