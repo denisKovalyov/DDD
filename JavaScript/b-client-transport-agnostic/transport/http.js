@@ -42,7 +42,6 @@ module.exports = (routing, port, console) => {
     if (signature.includes('{')) args.push(await receiveArgs(req));
     console.log(`${socket.remoteAddress} ${method} ${url} ${args}`);
     const result = await handler(...args);
-    console.log('result', result);
     res.setHeader('Content-Type', 'application/json; charset=UTF-8');
     res.end(JSON.stringify(result));
   }).listen(port);
