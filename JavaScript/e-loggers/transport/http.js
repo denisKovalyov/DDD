@@ -43,7 +43,7 @@ module.exports = (routing, port, console) => {
     console.log(`${socket.remoteAddress} ${method} ${url} ${args}`);
     const result = await handler(...args);
     res.setHeader('Content-Type', 'application/json; charset=UTF-8');
-    res.end(JSON.stringify(result.rows));
+    res.end(JSON.stringify(result));
   }).listen(port);
 
   console.log(`API on port ${port}`);

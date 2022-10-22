@@ -1,7 +1,7 @@
 'use strict';
 
 // To be filled on static server start
-const API_URL = 'http://127.0.0.1:8001';
+const API_URL = 'ws://127.0.0.1:8001';
 
 const createMethodHttp = ({ serviceName, methodName, parameters }) => (...args) =>
   new Promise((resolve, reject) => {
@@ -79,6 +79,10 @@ const scaffold = (url, structure) => {
       delete: ['id'],
       find: ['mask'],
     },
+    city: {
+      read: ['id'],
+      create: ['record'],
+    }
   });
 
   window.api = api;
@@ -86,6 +90,8 @@ const scaffold = (url, structure) => {
   console.log('API_URL: ', API_URL);
   const user = await api.user.read(2);
   const countries = await api.country.read();
-  console.dir({ user, countries });
-  document.getElementById('output').innerText = JSON.stringify(user) + '\n' + JSON.stringify(countries);
+  const cities = await api.city.read();
+  console.dir({ user, countries, cities });
+  document.getElementById('output').innerText =
+    JSON.stringify(user) + '\n' + JSON.stringify(countries) + '\n' + JSON.stringify(cities);
 })();
