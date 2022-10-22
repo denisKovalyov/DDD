@@ -31,7 +31,7 @@ const adapter = (routing, console) => {
           if (hasId) args.push(req.params['*'].slice(1));
           if (signature.includes('{')) args.push(req.body);
           const result = await handler(...args);
-          return result.rows;
+          return result;
         },
       });
     }
