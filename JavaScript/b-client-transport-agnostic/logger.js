@@ -15,14 +15,14 @@ const COLORS = {
 const DATETIME_LENGTH = 19;
 
 class Logger {
-  constructor({ logsPath }) {
-    if (!fs.existsSync(logsPath)){
-      fs.mkdirSync(logsPath);
+  constructor({ LOGS_PATH }) {
+    if (!fs.existsSync(LOGS_PATH)){
+      fs.mkdirSync(LOGS_PATH);
     }
 
-    this.path = logsPath;
+    this.path = LOGS_PATH;
     const date = new Date().toISOString().substring(0, 10);
-    const filePath = path.join(logsPath, `${date}.log`);
+    const filePath = path.join(LOGS_PATH, `${date}.log`);
     this.stream = fs.createWriteStream(filePath, { flags: 'a' });
     this.regexp = new RegExp(path.dirname(this.path), 'g');
   }

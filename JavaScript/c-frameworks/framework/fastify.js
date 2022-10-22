@@ -7,7 +7,7 @@ const configureCORS = async () => {
   await fastify.register(cors, {});
 };
 
-const adapter = (routing) => {
+const adapter = (routing, console) => {
   const services = Object.keys(routing);
   for (let serviceName of services) {
     const service = routing[serviceName];
@@ -38,14 +38,15 @@ const adapter = (routing) => {
   };
 };
 
-module.exports = async (routing, port) => {
+module.exports = async (routing, port, console) => {
   await configureCORS();
-  adapter(routing);
+  adapter(routing, console);
 
   try {
     await fastify.listen({ port });
+    console.log(`API on port ${port}`);
   } catch (err) {
-    fastify.log.error(err);
+    console.error(err);
     process.exit(1);
   }
 };

@@ -1,14 +1,15 @@
 'use strict';
 
-const { transport, staticPort, apiPort, ...config } = require('./config');
+const { TRANSPORT, STATIC_PORT, API, ...CONFIG} = require('./config');
+
 const fsp = require('node:fs').promises;
 const path = require('node:path');
-const server = require(`./transport/${transport}.js`);
+const server = require(`./transport/${TRANSPORT}.js`);
 const staticServer = require('./static.js');
-const load = require('./load.js')(config.sandbox);
-const db = require('./db.js')(config.db);
-const hash = require('./hash.js')(config.crypto);
-const logger = require('./logger.js')(config.logger);
+const load = require('./load.js')(CONFIG.SANDBOX);
+const db = require('./db.js')(CONFIG.DB);
+const hash = require('./hash.js')(CONFIG.CRYPTO);
+const logger = require('./logger.js')(CONFIG.LOGGER);
 
 const sandbox = {
   console: Object.freeze(logger),
@@ -27,6 +28,7 @@ const routing = {};
     routing[serviceName] = await load(filePath, sandbox);
   }
 
-  staticServer('./static', staticPort, logger);
-  server(routing, apiPort, logger);
+  const API_ORIGIN = `${TRANSPORT}://${API.HOST}:${API.PORT}`;
+  staticServer('./static', STATIC_PORT, API_ORIGIN, logger);
+  server(routing, API.PORT, logger);
 })();

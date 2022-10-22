@@ -1,15 +1,11 @@
 'use strict';
 
-const TRANSPORT = {
-  WS: 'ws://127.0.0.1:8001',
-  HTTP: 'http://127.0.0.1:8001',
-};
+// To be filled on static server start
+const API_URL = 'http://127.0.0.1:8001';
 
-let socket;
-
-const createMethodHttp = (serviceName, methodName, parameters) => (...args) =>
+const createMethodHttp = ({ serviceName, methodName, parameters }) => (...args) =>
   new Promise((resolve, reject) => {
-    let url = `${TRANSPORT.HTTP}/${serviceName}/${methodName}`;
+    let url = `${API_URL}/${serviceName}/${methodName}`;
     const id = parameters.includes("id") ? args[0] : null;
     if (id) url += `/${id}`;
     fetch(url, {
@@ -27,9 +23,9 @@ const createMethodHttp = (serviceName, methodName, parameters) => (...args) =>
     });
   });
 
-const createMethodWs = (serviceName, methodName) => (...args) =>
+const createMethodWs = ({ serviceName, methodName, socket }) => (...args) =>
   new Promise((resolve) => {
-    const packet = {name: serviceName, method: methodName, args};
+    const packet = { name: serviceName, method: methodName, args };
     socket.send(JSON.stringify(packet));
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -37,18 +33,14 @@ const createMethodWs = (serviceName, methodName) => (...args) =>
     };
   });
 
-const createMethod = ({ url, serviceName, methodName, parameters }) => {
-  switch (url) {
-    case TRANSPORT.WS: return createMethodWs(serviceName, methodName);
-    case TRANSPORT.HTTP:
-    default: return createMethodHttp(serviceName, methodName, parameters);
-  }
+const TRANSPORT = {
+  'ws': createMethodWs,
+  'http': createMethodHttp,
 };
 
 const scaffold = (url, structure) => {
-  if (url === TRANSPORT.WS && !socket) {
-    socket = new WebSocket(TRANSPORT.WS);
-  };
+  const protocol = url.startsWith('ws:') ? 'ws' : 'http';
+  const socket = protocol === 'ws' ? new WebSocket(API_URL) : null;
 
   const api = {};
   const services = Object.keys(structure);
@@ -57,43 +49,43 @@ const scaffold = (url, structure) => {
     const service = structure[serviceName];
     const methods = Object.keys(service);
     for (const methodName of methods) {
-      api[serviceName][methodName] = createMethod({
-        url,
+      api[serviceName][methodName] = TRANSPORT[protocol]({
         serviceName,
         methodName,
+        socket,
         parameters: service[methodName],
       });
     }
   }
-  return api;
+
+  return new Promise((resolve) => {
+    socket ? socket.addEventListener('open', () => resolve(api)) : resolve(api);
+  });
 };
 
-const api = scaffold(TRANSPORT.WS, {
-  user: {
-    create: ['record'],
-    read: ['id'],
-    update: ['id', 'record'],
-    delete: ['id'],
-    find: ['mask'],
-  },
-  country: {
-    create: ['record'],
-    read: ['id'],
-    update: ['id', 'record'],
-    delete: ['id'],
-    find: ['mask'],
-  },
-});
+(async () => {
+  const api = await scaffold(API_URL, {
+    user: {
+      create: ['record'],
+      read: ['id'],
+      update: ['id', 'record'],
+      delete: ['id'],
+      find: ['mask'],
+    },
+    country: {
+      create: ['record'],
+      read: ['id'],
+      update: ['id', 'record'],
+      delete: ['id'],
+      find: ['mask'],
+    },
+  });
 
-const testApi = async () => {
+  window.api = api;
+
+  console.log('API_URL: ', API_URL);
   const user = await api.user.read(2);
   const countries = await api.country.read();
   console.dir({ user, countries });
   document.getElementById('output').innerText = JSON.stringify(user) + '\n' + JSON.stringify(countries);
-};
-
-if (socket) {
-  socket.addEventListener('open', testApi);
-} else {
-  testApi();
-};
+})();

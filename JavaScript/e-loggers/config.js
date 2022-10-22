@@ -1,26 +1,29 @@
 module.exports = {
-  transport: 'ws', // 'http' or 'ws'
-  framework: 'native', // 'native' or 'fastify'
-  staticPort: 8000,
-  apiPort: 8001,
-  crypto: {
-    saltSize: 16,
-    hashSize: 64,
+  TRANSPORT: 'http', // 'http' or 'ws'
+  FRAMEWORK: 'fastify', // 'native' or 'fastify'
+  STATIC_PORT: 8000,
+  API: {
+    PORT: 8001,
+    HOST: '127.0.0.1',
   },
-  sandbox: {
-    timeout: 5000,
-    displayErrors: true,
+  CRYPTO: {
+    SALT_SIZE: 16,
+    HASH_SIZE: 64,
   },
-  logger: {
-    loggerName: 'native', // 'native', 'logger' or 'pino',
-    logsPath: './log',
-    level: 'debug',
+  SANDBOX: {
+    TIMEOUT: 5000,
+    DISPLAY_ERRORS: true,
   },
-  db: {
-    host: '127.0.0.1',
-    port: 5432,
-    database: 'example',
-    user: 'marcus',
-    password: 'marcus',
+  LOGGER: {
+    NAME: 'pino', // 'native', 'logger' or 'pino'
+    LOGS_PATH: './log',
+    LOGS_LEVEL: 'debug',
+  },
+  DB: {
+    HOST: '127.0.0.1',
+    PORT: 5432,
+    DATABASE: 'example',
+    USER: 'marcus',
+    PASSWORD: 'marcus',
   },
 };
