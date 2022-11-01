@@ -1,6 +1,6 @@
-import { Role } from "./Role";
-import { Country } from "./Country";
-import { Club } from "./Club";
+import { Role } from './Role';
+import { Country } from './Country';
+import { Club } from './Club';
 
 export interface Player {
   firstName: string;

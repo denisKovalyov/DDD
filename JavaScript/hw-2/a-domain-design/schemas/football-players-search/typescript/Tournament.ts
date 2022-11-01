@@ -1,5 +1,5 @@
-import { Country } from "./Country";
-import { Club } from "./Club";
+import { Country } from './Country';
+import { Club } from './Club';
 
 export interface Tournament {
   name: string;
