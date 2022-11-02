@@ -1,25 +1,86 @@
-INSERT INTO "Account" ("login", "password") VALUES
-  ('admin', 'ypMEd9FwvtlOjcvH94iICQ==:V6LnSOVwXzENxeLCJk59Toadea7oaA1IxYulAOtKkL9tBxjEPOw085vYalEdLDoe8xbrXQlhh7QRGzrSe8Bthw=='),
-  ('marcus', 'dpHw0OUNBz76nuqrXZbeYQ==:wpvUVgi8Yp9rJ0yZyBWecaWP2EL/ahpxZY74KOVfhAYbAZSq6mWqjsQwtCvIPcSKZqUVpVb13JcSciB2fA+6Tg=='),
-  ('user', 'r8zb8AdrlPSh5wNy6hqOxg==:HyO5rvOFLtwzU+OZ9qFi3ADXlVccDJWGSfUS8mVq43spJ6sxyliUdW3i53hOPdkFAtDn3EAQMttOlIoJap1lTQ=='),
-  ('iskandar', 'aqX1O4bKXiwC/Jh2EKNIYw==:bpE4TARNg09vb2Libn1c00YRxcvoklB9zVSbD733LwQQFUuAm7WHP85PbZXwEbbeOVPIFHgflR4cvEmvYkr76g==');
+INSERT INTO Position ("name") VALUES ('Goalkeeper'), ('Defender'), ('Midfielder'), ('Forward');
 
--- Examples login/password
--- admin/123456
--- marcus/marcus
--- user/nopassword
--- iskandar/zulqarnayn
+INSERT INTO Role ("name", "shortName") VALUES
+    ('Goalkeeper', 'GK'),
+    ('Centre-Back', 'CB'),
+    ('Left-Back', 'LB'),
+    ('Right-Back', 'RB'),
+    ('Defensive Midfield', 'DM'),
+    ('Central Midfield', 'CM'),
+    ('Attacking Midfield', 'AM'),
+    ('Left Winger', 'LW'),
+    ('Right Winger', 'RW'),
+    ('Centre-Forward', 'CF');
 
-INSERT INTO "Area" ("name", "ownerId") VALUES
-  ('Metarhia', 2),
-  ('Metaeducation', 2);
+INSERT INTO Country ("name", "shortName") VALUES
+    ('Ukraine', 'UA'),
+    ('Italy', 'IT'),
+    ('Spain', 'ES'),
+    ('England', 'EN'),
+    ('German', 'DE'),
+    ('France', 'FR'),
+    ('Portugal', 'PT'),
+    ('Netherlands', 'NL'),
+    ('Croatia', 'CR'),
+    ('Ireland', 'IE'),
+    ('Brazil', 'BR'),
+    ('Argentina', 'AR');
 
-INSERT INTO "AreaAccount" ("areaId", "accountId") VALUES
-  (1, 1),
-  (1, 2),
-  (1, 3),
-  (1, 4),
-  (2, 1),
-  (2, 2),
-  (2, 3),
-  (2, 4);
+INSERT INTO City ("name", "countryId") VALUES
+    ('Kyiv', 1),
+    ('Roma', 2),
+    ('Milan', 2),
+    ('Madrid', 3),
+    ('Barcelona', 3),
+    ('Bilbao', 3),
+    ('London', 4),
+    ('Manchester', 4),
+    ('Liverpool', 4),
+    ('Munich', 5),
+    ('Dortmund', 5),
+    ('Paris', 6),
+    ('Marseille', 6),
+    ('Porto', 7),
+    ('Amsterdam', 8);
+
+INSERT INTO Stadium ("name", "capacity", "constructed", "cityId") VALUES
+    ('NSC Olimpiiskyi', 70050, 1923, 1),
+    ('Stadio Olimpico', 70634, 1927, 2),
+    ('Stadio Giuseppe Meazza', 80018, 1926, 3),
+    ('Estadio Santiago Bernabéu', 81044, 1947, 4),
+    ('Camp Nou', 99354, 1957, 5),
+    ('Estadio de San Mamés', 53289, 2013, 6),
+    ('Wembley Stadium', 90000, 2007, 7),
+    ('Tottenham Hotspur Stadium', 62062, 2019, 7),
+    ('Stamford Bridge', 41841, 1877, 7),
+    ('Ashburton Grove', 60704, 2006, 7),
+    ('City of Manchester', 53400, 1999, 8),
+    ('Old Trafford', 74310, 1910, 8),
+    ('Anfield', 54074, 1884, 9),
+    ('Allianz Arena', 66000, 2005, 10),
+    ('Westfalenstadion', 81365, 1974, 11),
+    ('Parc des Princes', 48712, 1897, 12),
+    ('Stade Vélodrome', 67000, 1937, 13),
+    ('Estádio do Dragão', 50399, 2003, 14),
+    ('Johan Cruijff ArenA', 56120, 1996, 15);
+
+INSERT INTO Club ("name", "founded", "cityId", "stadiumId") VALUES
+    ('FC Dynamo Kyiv', '1927-05-13', 1, 1),
+    ('AS Roma', '1927-06-07', 2, 2),
+    ('Internazionale', '1908-03-09', 3, 3),
+    ('AC Milan', '1899-12-16', 3, 3),
+    ('Real Madrid', '1902-03-06', 4, 4),
+    ('Barcelona', '1899-11-29', 5, 5),
+    ('Atletic Bilbao', '1898-01-01', 6, 6),
+    ('Chelsea', '1905-03-10', 7, 9),
+    ('Arsenal', '1886-10-01', 7, 10),
+    ('Tottenham Hotspur', '1882-09-05', 7, 8),
+    ('Manchester United', '1878-01-01', 8, 12),
+    ('Manchester City', '1880-01-01', 8, 11),
+    ('Liverpool', '1892-06-03', 9, 13),
+    ('FC Bayern Munich', '1900-02-27', 10, 14),
+    ('Borussia Dortmund', '1909-12-19', 11, 15),
+    ('Paris Saint-Germain', '1970-08-12', 12, 16),
+    ('Marseille', '1899-08-31', 13, 17),
+    ('FC Porto', '1893-09-28', 14, 18),
+    ('Ajax', '1900-03-18', 15, 19);

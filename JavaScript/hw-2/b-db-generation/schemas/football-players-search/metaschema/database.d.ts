@@ -13,7 +13,7 @@ interface Player {
 interface Club {
   id: string;
   name: string;
-  foundation: number;
+  founded: Date;
   cityId: string;
   stadiumId: string;
 }
@@ -35,6 +35,7 @@ interface Stadium {
 interface Country {
   id: string;
   name: string;
+  shortName: string;
 }
 
 interface Role {
@@ -53,7 +54,7 @@ interface Position {
 interface Tournament {
   id: string;
   name: string;
-  countryId?: string;
   teamsNumber: number;
+  countryId?: string;
   teams: string[]; // either Country ids or Club ids
 }

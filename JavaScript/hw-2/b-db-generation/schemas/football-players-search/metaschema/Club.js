@@ -2,7 +2,7 @@
   Entity: {},
 
   name: 'string',
-  foundation: 'number',
+  founded: 'string',
   city: 'City',
   stadium: 'Stadium',
 });

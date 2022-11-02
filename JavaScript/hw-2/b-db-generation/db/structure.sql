@@ -1,67 +1,106 @@
-CREATE TABLE "Role" (
-  "roleId" bigint generated always as identity,
+CREATE TABLE Position (
+  "id" smallint generated always as identity,
   "name" varchar NOT NULL
 );
 
-ALTER TABLE "Role" ADD CONSTRAINT "pkRole" PRIMARY KEY ("roleId");
-CREATE UNIQUE INDEX "akRoleName" ON "Role" ("name");
+ALTER TABLE Position ADD CONSTRAINT "pkPosition" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akPositionName" ON Position ("name");
 
-CREATE TABLE "Account" (
-  "accountId" bigint generated always as identity,
-  "login" varchar(64) NOT NULL,
-  "password" varchar NOT NULL
-);
-
-ALTER TABLE "Account" ADD CONSTRAINT "pkAccount" PRIMARY KEY ("accountId");
-CREATE UNIQUE INDEX "akAccountLogin" ON "Account" ("login");
-
-CREATE TABLE "AccountRole" (
-  "accountId" bigint NOT NULL,
-  "roleId" bigint NOT NULL
-);
-
-ALTER TABLE "AccountRole" ADD CONSTRAINT "pkAccountRole" PRIMARY KEY ("accountId", "roleId");
-ALTER TABLE "AccountRole" ADD CONSTRAINT "fkAccountRoleAccount" FOREIGN KEY ("accountId") REFERENCES "Account" ("accountId") ON DELETE CASCADE;
-ALTER TABLE "AccountRole" ADD CONSTRAINT "fkAccountRoleRole" FOREIGN KEY ("roleId") REFERENCES "Role" ("roleId") ON DELETE CASCADE;
-
-CREATE TABLE "Area" (
-  "areaId" bigint generated always as identity,
+CREATE TABLE Role (
+  "id" smallint generated always as identity,
   "name" varchar NOT NULL,
-  "ownerId" bigint NOT NULL
+  "shortName" varchar NOT NULL
 );
 
-ALTER TABLE "Area" ADD CONSTRAINT "pkArea" PRIMARY KEY ("areaId");
-CREATE UNIQUE INDEX "akAreaName" ON "Area" ("name");
-ALTER TABLE "Area" ADD CONSTRAINT "fkAreaOwner" FOREIGN KEY ("ownerId") REFERENCES "Account" ("accountId");
+ALTER TABLE Role ADD CONSTRAINT "pkRole" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akRoleName" ON Role ("name");
 
-CREATE TABLE "AreaAccount" (
-  "areaId" bigint NOT NULL,
-  "accountId" bigint NOT NULL
+CREATE TABLE Country (
+  "id" smallint generated always as identity,
+  "name" varchar NOT NULL,
+  "shortName" varchar NOT NULL
 );
 
-ALTER TABLE "AreaAccount" ADD CONSTRAINT "pkAreaAccount" PRIMARY KEY ("areaId", "accountId");
-ALTER TABLE "AreaAccount" ADD CONSTRAINT "fkAreaAccountArea" FOREIGN KEY ("areaId") REFERENCES "Area" ("areaId") ON DELETE CASCADE;
-ALTER TABLE "AreaAccount" ADD CONSTRAINT "fkAreaAccountAccount" FOREIGN KEY ("accountId") REFERENCES "Account" ("accountId") ON DELETE CASCADE;
+ALTER TABLE Country ADD CONSTRAINT "pkCountry" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akCountryName" ON Country ("name");
 
-CREATE TABLE "Message" (
-  "messageId" bigint generated always as identity,
-  "areaId" bigint NOT NULL,
-  "fromId" bigint NOT NULL,
-  "text" varchar NOT NULL
+CREATE TABLE City (
+  "id" int generated always as identity,
+  "name" varchar NOT NULL,
+  "countryId" int NOT NULL
 );
 
-ALTER TABLE "Message" ADD CONSTRAINT "pkMessage" PRIMARY KEY ("messageId");
-ALTER TABLE "Message" ADD CONSTRAINT "fkMessageArea" FOREIGN KEY ("areaId") REFERENCES "Area" ("areaId");
-ALTER TABLE "Message" ADD CONSTRAINT "fkMessageFrom" FOREIGN KEY ("fromId") REFERENCES "Account" ("accountId");
+ALTER TABLE City ADD CONSTRAINT "pkCity" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akCityName" ON City ("name");
 
-CREATE TABLE "Session" (
-  "sessionId" bigint generated always as identity,
-  "accountId" bigint NOT NULL,
-  "token" varchar NOT NULL,
-  "ip" inet NOT NULL,
-  "data" jsonb NOT NULL
+CREATE TABLE Stadium (
+  "id" int generated always as identity,
+  "name" varchar NOT NULL,
+  "capacity" int NOT NULL,
+  "constructed" int,
+  "cityId" int NOT NULL
 );
 
-ALTER TABLE "Session" ADD CONSTRAINT "pkSession" PRIMARY KEY ("sessionId");
-ALTER TABLE "Session" ADD CONSTRAINT "fkSessionAccount" FOREIGN KEY ("accountId") REFERENCES "Account" ("accountId");
-CREATE UNIQUE INDEX "akSessionToken" ON "Session" ("token");
+ALTER TABLE Stadium ADD CONSTRAINT "pkStadium" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akStadiumNameCity" ON Stadium ("name", "cityId");
+ALTER TABLE Stadium ADD CONSTRAINT "fkStadiumCity" FOREIGN KEY ("cityId") REFERENCES City ("id");
+
+CREATE TABLE Club (
+  "id" int generated always as identity,
+  "name" varchar NOT NULL,
+  "founded" Date NOT NULL,
+  "cityId" int NOT NULL,
+  "stadiumId" int NOT NULL
+);
+
+ALTER TABLE Club ADD CONSTRAINT "pkClub" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akClubNameCity" ON Club ("name", "cityId");
+ALTER TABLE Club ADD CONSTRAINT "fkClubCity" FOREIGN KEY ("cityId") REFERENCES City ("id");
+ALTER TABLE Club ADD CONSTRAINT "fkClubStadium" FOREIGN KEY ("stadiumId") REFERENCES Stadium ("id");
+
+CREATE TABLE Player (
+  "id" int generated always as identity,
+  "firstName" varchar NOT NULL,
+  "lastName" varchar NOT NULL,
+  "height" int,
+  "weight" int,
+  "dateOfBirth" Date,
+  "nationalityId" int NOT NULL,
+  "clubId" int NOT NULL
+);
+
+ALTER TABLE Player ADD CONSTRAINT "pkPlayer" PRIMARY KEY ("id");
+ALTER TABLE Player ADD CONSTRAINT "fkPlayerCountry" FOREIGN KEY ("nationalityId") REFERENCES Country ("id");
+ALTER TABLE Player ADD CONSTRAINT "fkPlayerClub" FOREIGN KEY ("clubId") REFERENCES Club ("id");
+
+CREATE TABLE PlayerRole (
+  "playerId" int NOT NULL,
+  "roleId" smallint NOT NULL
+);
+
+ALTER TABLE PlayerRole ADD CONSTRAINT "pkPlayerRole" PRIMARY KEY ("playerId", "roleId");
+ALTER TABLE PlayerRole ADD CONSTRAINT "fkPlayerRolePlayer" FOREIGN KEY ("playerId") REFERENCES Player ("id") ON DELETE CASCADE;
+ALTER TABLE PlayerRole ADD CONSTRAINT "fkPlayerRoleRole" FOREIGN KEY ("roleId") REFERENCES Role ("id") ON DELETE CASCADE;
+
+CREATE TABLE Tournament (
+  "id" smallint generated always as identity,
+  "name" varchar NOT NULL,
+  "teamsNumber" int NOT NULL,
+  "countryId" int
+);
+
+ALTER TABLE Tournament ADD CONSTRAINT "pkTournament" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akTournamentNameCountry" ON Tournament ("name", "countryId");
+ALTER TABLE Tournament ADD CONSTRAINT "fkTournamentCountry" FOREIGN KEY ("countryId") REFERENCES Country ("id");
+
+CREATE TABLE TournamentTeam (
+  "tournamentId" smallint NOT NULL,
+  "nationalTeamId" smallint,
+  "clubId" int
+);
+
+ALTER TABLE TournamentTeam ADD CONSTRAINT "pkTournamentTeam" PRIMARY KEY ("tournamentId", "nationalTeamId", "clubId");
+ALTER TABLE TournamentTeam ADD CONSTRAINT "fkTournamentTeam" FOREIGN KEY ("tournamentId") REFERENCES Tournament ("id") ON DELETE CASCADE;
+ALTER TABLE TournamentTeam ADD CONSTRAINT "fkTournamentNationalTeam" FOREIGN KEY ("nationalTeamId") REFERENCES Country ("id") ON DELETE CASCADE;
+ALTER TABLE TournamentTeam ADD CONSTRAINT "fkTournamentClub" FOREIGN KEY ("clubId") REFERENCES Club ("id") ON DELETE CASCADE;
+ALTER TABLE TournamentTeam ADD CONSTRAINT "notNullableTeams" CHECK ("nationalTeamId" is not null or "clubId" is not null);

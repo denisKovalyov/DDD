@@ -53,7 +53,7 @@ interface Position {
 interface Tournament {
   id: string;
   name: string;
-  countryId?: string;
   teamsNumber: number;
+  countryId?: string;
   teams: string[]; // either Country ids or Club ids
 }
