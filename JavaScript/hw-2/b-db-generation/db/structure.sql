@@ -36,7 +36,7 @@ CREATE TABLE Stadium (
 
 ALTER TABLE Stadium ADD CONSTRAINT "pkStadium" PRIMARY KEY ("id");
 CREATE UNIQUE INDEX "akStadiumNameCity" ON Stadium ("name", "cityId");
-ALTER TABLE Stadium ADD CONSTRAINT "fkStadiumCity" FOREIGN KEY ("cityId") REFERENCES City ("id");
+ALTER TABLE Stadium ADD CONSTRAINT "fkStadiumCity" FOREIGN KEY ("cityId") REFERENCES City ("id") ON DELETE CASCADE;
 
 CREATE TABLE Club (
   "id" int generated always as identity,
@@ -48,8 +48,8 @@ CREATE TABLE Club (
 
 ALTER TABLE Club ADD CONSTRAINT "pkClub" PRIMARY KEY ("id");
 CREATE UNIQUE INDEX "akClubNameCity" ON Club ("name", "cityId");
-ALTER TABLE Club ADD CONSTRAINT "fkClubCity" FOREIGN KEY ("cityId") REFERENCES City ("id");
-ALTER TABLE Club ADD CONSTRAINT "fkClubStadium" FOREIGN KEY ("stadiumId") REFERENCES Stadium ("id");
+ALTER TABLE Club ADD CONSTRAINT "fkClubCity" FOREIGN KEY ("cityId") REFERENCES City ("id") ON DELETE CASCADE;
+ALTER TABLE Club ADD CONSTRAINT "fkClubStadium" FOREIGN KEY ("stadiumId") REFERENCES Stadium ("id") ON DELETE CASCADE;
 
 CREATE TABLE Player (
   "id" int generated always as identity,
@@ -63,8 +63,8 @@ CREATE TABLE Player (
 );
 
 ALTER TABLE Player ADD CONSTRAINT "pkPlayer" PRIMARY KEY ("id");
-ALTER TABLE Player ADD CONSTRAINT "fkPlayerCountry" FOREIGN KEY ("nationalityId") REFERENCES Country ("id") ON DELETE CASCADE;;
-ALTER TABLE Player ADD CONSTRAINT "fkPlayerClub" FOREIGN KEY ("clubId") REFERENCES Club ("id") ON DELETE CASCADE;;
+ALTER TABLE Player ADD CONSTRAINT "fkPlayerCountry" FOREIGN KEY ("nationalityId") REFERENCES Country ("id") ON DELETE CASCADE;
+ALTER TABLE Player ADD CONSTRAINT "fkPlayerClub" FOREIGN KEY ("clubId") REFERENCES Club ("id") ON DELETE CASCADE;
 
 CREATE TABLE PlayerRole (
   "playerId" int NOT NULL,
