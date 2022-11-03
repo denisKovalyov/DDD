@@ -1,15 +1,8 @@
-CREATE TABLE Position (
-  "id" smallint generated always as identity,
-  "name" varchar NOT NULL
-);
-
-ALTER TABLE Position ADD CONSTRAINT "pkPosition" PRIMARY KEY ("id");
-CREATE UNIQUE INDEX "akPositionName" ON Position ("name");
-
 CREATE TABLE Role (
   "id" smallint generated always as identity,
   "name" varchar NOT NULL,
-  "shortName" varchar NOT NULL
+  "shortName" varchar NOT NULL,
+  "position" varchar NOT NULL
 );
 
 ALTER TABLE Role ADD CONSTRAINT "pkRole" PRIMARY KEY ("id");
@@ -70,8 +63,8 @@ CREATE TABLE Player (
 );
 
 ALTER TABLE Player ADD CONSTRAINT "pkPlayer" PRIMARY KEY ("id");
-ALTER TABLE Player ADD CONSTRAINT "fkPlayerCountry" FOREIGN KEY ("nationalityId") REFERENCES Country ("id");
-ALTER TABLE Player ADD CONSTRAINT "fkPlayerClub" FOREIGN KEY ("clubId") REFERENCES Club ("id");
+ALTER TABLE Player ADD CONSTRAINT "fkPlayerCountry" FOREIGN KEY ("nationalityId") REFERENCES Country ("id") ON DELETE CASCADE;;
+ALTER TABLE Player ADD CONSTRAINT "fkPlayerClub" FOREIGN KEY ("clubId") REFERENCES Club ("id") ON DELETE CASCADE;;
 
 CREATE TABLE PlayerRole (
   "playerId" int NOT NULL,
@@ -90,17 +83,18 @@ CREATE TABLE Tournament (
 );
 
 ALTER TABLE Tournament ADD CONSTRAINT "pkTournament" PRIMARY KEY ("id");
-CREATE UNIQUE INDEX "akTournamentNameCountry" ON Tournament ("name", "countryId");
-ALTER TABLE Tournament ADD CONSTRAINT "fkTournamentCountry" FOREIGN KEY ("countryId") REFERENCES Country ("id");
+CREATE UNIQUE INDEX "akTournamentNameCountry" ON Tournament ("name", COALESCE("countryId", 0));
+ALTER TABLE Tournament ADD CONSTRAINT "fkTournamentCountry" FOREIGN KEY ("countryId") REFERENCES Country ("id") ON DELETE CASCADE;
 
 CREATE TABLE TournamentTeam (
+  "id" bigint generated always as identity,
   "tournamentId" smallint NOT NULL,
-  "nationalTeamId" smallint,
-  "clubId" int
+  "clubId" int,
+  "nationalTeamId" smallint
 );
 
-ALTER TABLE TournamentTeam ADD CONSTRAINT "pkTournamentTeam" PRIMARY KEY ("tournamentId", "nationalTeamId", "clubId");
+ALTER TABLE TournamentTeam ADD CONSTRAINT "pkTournamentTeam" PRIMARY KEY ("id");
 ALTER TABLE TournamentTeam ADD CONSTRAINT "fkTournamentTeam" FOREIGN KEY ("tournamentId") REFERENCES Tournament ("id") ON DELETE CASCADE;
-ALTER TABLE TournamentTeam ADD CONSTRAINT "fkTournamentNationalTeam" FOREIGN KEY ("nationalTeamId") REFERENCES Country ("id") ON DELETE CASCADE;
 ALTER TABLE TournamentTeam ADD CONSTRAINT "fkTournamentClub" FOREIGN KEY ("clubId") REFERENCES Club ("id") ON DELETE CASCADE;
+ALTER TABLE TournamentTeam ADD CONSTRAINT "fkTournamentNationalTeam" FOREIGN KEY ("nationalTeamId") REFERENCES Country ("id") ON DELETE CASCADE;
 ALTER TABLE TournamentTeam ADD CONSTRAINT "notNullableTeams" CHECK ("nationalTeamId" is not null or "clubId" is not null);

@@ -3,7 +3,7 @@ import { Stadium } from './Stadium';
 
 export interface Club {
   name: string;
-  foundation: number;
+  founded: Date;
   city: City,
   stadium: Stadium,
 }

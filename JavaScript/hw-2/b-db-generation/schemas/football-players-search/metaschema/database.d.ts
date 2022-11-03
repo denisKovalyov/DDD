@@ -42,13 +42,7 @@ interface Role {
   id: string;
   name: string;
   shortName: string;
-  positionId: string;
-}
-
-interface Position {
-  id: string;
-  name: string;
-  shortName: string;
+  position: string;
 }
 
 interface Tournament {
