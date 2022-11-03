@@ -2,5 +2,7 @@
   Entity: {},
 
   name: { type: 'string', unique: true },
-  shortName: 'string',
+  capacity: 'number',
+  constructed: 'string',
+  city: 'City',
 });

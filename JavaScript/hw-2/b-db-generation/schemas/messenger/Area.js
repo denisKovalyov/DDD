@@ -2,5 +2,6 @@
   Entity: {},
 
   name: { type: 'string', unique: true },
-  shortName: 'string',
+  owner: 'Account',
+  members: { many: 'Account' },
 });
