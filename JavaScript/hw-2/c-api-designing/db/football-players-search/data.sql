@@ -1,4 +1,4 @@
-INSERT INTO Role ("name", "shortName", "position") VALUES
+INSERT INTO Position ("name", "shortName", "generalName") VALUES
     ('Goalkeeper', 'GK', 'Goalkeeper'),
     ('Centre-Back', 'CB', 'Defender'),
     ('Left-Back', 'LB', 'Defender'),
@@ -96,7 +96,7 @@ INSERT INTO Player ("firstName", "lastName", "height", "weight", "dateOfBirth", 
     ('Trent', 'Alexander-Arnold', 180, 69, '1998-10-07', 4, 13),
     ('Andriy', 'Lunin', 191, 80, '1999-02-11', 1, 5);
 
-INSERT INTO PlayerRole ("playerId", "roleId") VALUES
+INSERT INTO PlayerPosition ("playerId", "positionId") VALUES
     (1, 8),
     (1, 7),
     (2, 10),

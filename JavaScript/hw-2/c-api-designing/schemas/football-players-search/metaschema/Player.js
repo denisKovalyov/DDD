@@ -6,7 +6,7 @@
   height: 'number',
   weight: 'number',
   dateOfBirth: 'string',
-  roles: { many: 'Role' },
+  positions: { many: 'Positions' },
   nationality: 'Country',
   club: 'Club',
 });

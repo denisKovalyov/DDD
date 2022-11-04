@@ -5,7 +5,7 @@ interface Player {
   height: number;
   weight: number;
   dateOfBirth: Date;
-  rolesId: string[];
+  positionsId: string[];
   nationalityId: string;
   clubId: string;
 }
@@ -38,11 +38,11 @@ interface Country {
   shortName: string;
 }
 
-interface Role {
+interface Position {
   id: string;
   name: string;
   shortName: string;
-  position: string;
+  generalName: string;
 }
 
 interface Tournament {
