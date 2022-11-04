@@ -6,13 +6,13 @@
 
   async deleteArea({ areaId, ownerId }) {
     console.log({ method: 'messenger.deleteArea', areaId, ownerId });
-    // method should work only for owner of Area
+    // method should work only for users of the Area
     return { status: 'ok' };
   },
 
   async addUserToArea({ areaId, ownerId, accountId  }) {
     console.log({ method: 'messenger.addUserToArea', areaId, ownerId, accountId });
-    // method should work only for owner of Area
+    // method should work only for users of the Area
     return { status: 'ok' };
   },
 
@@ -28,7 +28,7 @@
 
   async getAreaMessages({ areaId, accountId, amount, dateFrom, dateTo }) {
     console.log({ method: 'messenger.getAreaMessages', areaId, accountId, amount, dateFrom, dateTo });
-    // method should work only for users of Area
+    // method should work only for users of the Area
     const messages = [
       { from: 'Account login', text: 'Hey everybody!' },
       { from: 'Account login', text: 'Some message!' },
@@ -39,13 +39,13 @@
 
   async subscribeToArea({ areaId, accountId }) {
     console.log({ method: 'messenger.subscribeToArea', areaId, accountId });
-    // method should work only for users of Area
+    // method should work only for users of the Area
     return { status: 'ok' };
   },
 
   async unsubscribeFromArea({ areaId, accountId }) {
     console.log({ method: 'messenger.unsubscirbeFromArea', areaId, accountId });
-    // method should work only for users of Area
+    // method should work only for users of the Area
     return { status: 'ok' };
   },
 

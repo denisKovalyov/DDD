@@ -71,6 +71,28 @@ const scaffold = (url) => {
       unsubscribeFromArea: ['areaId', 'accountId'],
       sendMessage: ['areaId', 'text'],
     },
+    footballDB: {
+      find: ['mask'],
+      getPlayer: ['id'],
+      getClub: ['id'],
+      getStadium: ['id'],
+      getTournament: ['id'],
+      getPositions: [],
+      getCities: [],
+      getCountries: [],
+      createPlayer: ['record'],
+      updatePlayer: ['id', 'record'],
+      deletePlayer: ['id'],
+      createClub: ['record'],
+      updateClub: ['id', 'record'],
+      deleteClub: ['id'],
+      createStadium: ['record'],
+      updateStadium: ['id', 'record'],
+      deleteStadium: ['id'],
+      createTournament: ['record'],
+      updateTournament: ['id', 'record'],
+      deleteTournament: ['id'],
+    },
   });
 
   window.api = api;

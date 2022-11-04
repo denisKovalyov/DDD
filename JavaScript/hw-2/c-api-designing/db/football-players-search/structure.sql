@@ -1,12 +1,12 @@
-CREATE TABLE Role (
+CREATE TABLE Position (
   "id" smallint generated always as identity,
   "name" varchar NOT NULL,
   "shortName" varchar NOT NULL,
-  "position" varchar NOT NULL
+  "generalName" varchar NOT NULL
 );
 
-ALTER TABLE Role ADD CONSTRAINT "pkRole" PRIMARY KEY ("id");
-CREATE UNIQUE INDEX "akRoleName" ON Role ("name");
+ALTER TABLE Position ADD CONSTRAINT "pkPosition" PRIMARY KEY ("id");
+CREATE UNIQUE INDEX "akPositionName" ON Position ("name");
 
 CREATE TABLE Country (
   "id" smallint generated always as identity,
@@ -66,14 +66,14 @@ ALTER TABLE Player ADD CONSTRAINT "pkPlayer" PRIMARY KEY ("id");
 ALTER TABLE Player ADD CONSTRAINT "fkPlayerCountry" FOREIGN KEY ("nationalityId") REFERENCES Country ("id") ON DELETE CASCADE;
 ALTER TABLE Player ADD CONSTRAINT "fkPlayerClub" FOREIGN KEY ("clubId") REFERENCES Club ("id") ON DELETE CASCADE;
 
-CREATE TABLE PlayerRole (
+CREATE TABLE PlayerPosition (
   "playerId" int NOT NULL,
-  "roleId" smallint NOT NULL
+  "positionId" smallint NOT NULL
 );
 
-ALTER TABLE PlayerRole ADD CONSTRAINT "pkPlayerRole" PRIMARY KEY ("playerId", "roleId");
-ALTER TABLE PlayerRole ADD CONSTRAINT "fkPlayerRolePlayer" FOREIGN KEY ("playerId") REFERENCES Player ("id") ON DELETE CASCADE;
-ALTER TABLE PlayerRole ADD CONSTRAINT "fkPlayerRoleRole" FOREIGN KEY ("roleId") REFERENCES Role ("id") ON DELETE CASCADE;
+ALTER TABLE PlayerPosition ADD CONSTRAINT "pkPlayerPosition" PRIMARY KEY ("playerId", "positionId");
+ALTER TABLE PlayerPosition ADD CONSTRAINT "fkPlayerPositionPlayer" FOREIGN KEY ("playerId") REFERENCES Player ("id") ON DELETE CASCADE;
+ALTER TABLE PlayerPosition ADD CONSTRAINT "fkPlayerPositionPosition" FOREIGN KEY ("positionId") REFERENCES Position ("id") ON DELETE CASCADE;
 
 CREATE TABLE Tournament (
   "id" smallint generated always as identity,

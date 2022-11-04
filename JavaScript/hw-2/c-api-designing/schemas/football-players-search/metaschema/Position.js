@@ -3,5 +3,5 @@
 
   name: { type: 'string', unique: true },
   shortName: 'string',
-  position: 'string',
+  generalName: 'string',
 });

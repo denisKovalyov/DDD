@@ -1,10 +1,10 @@
-CREATE TABLE "Role" (
+CREATE TABLE "Position" (
   "roleId" bigint generated always as identity,
   "name" varchar NOT NULL
 );
 
-ALTER TABLE "Role" ADD CONSTRAINT "pkRole" PRIMARY KEY ("roleId");
-CREATE UNIQUE INDEX "akRoleName" ON "Role" ("name");
+ALTER TABLE "Position" ADD CONSTRAINT "pkRole" PRIMARY KEY ("roleId");
+CREATE UNIQUE INDEX "akRoleName" ON "Position" ("name");
 
 CREATE TABLE "Account" (
   "accountId" bigint generated always as identity,
@@ -22,7 +22,7 @@ CREATE TABLE "AccountRole" (
 
 ALTER TABLE "AccountRole" ADD CONSTRAINT "pkAccountRole" PRIMARY KEY ("accountId", "roleId");
 ALTER TABLE "AccountRole" ADD CONSTRAINT "fkAccountRoleAccount" FOREIGN KEY ("accountId") REFERENCES "Account" ("accountId") ON DELETE CASCADE;
-ALTER TABLE "AccountRole" ADD CONSTRAINT "fkAccountRoleRole" FOREIGN KEY ("roleId") REFERENCES "Role" ("roleId") ON DELETE CASCADE;
+ALTER TABLE "AccountRole" ADD CONSTRAINT "fkAccountRoleRole" FOREIGN KEY ("roleId") REFERENCES "Position" ("roleId") ON DELETE CASCADE;
 
 CREATE TABLE "Area" (
   "areaId" bigint generated always as identity,

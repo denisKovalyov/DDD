@@ -1,4 +1,4 @@
-import { Role } from './Role';
+import { Position } from './Position';
 import { Country } from './Country';
 import { Club } from './Club';
 
@@ -8,7 +8,7 @@ export interface Player {
   height: number;
   weight: number;
   dateOfBirth: Date;
-  roles: Role[];
+  positions: Position[];
   nationality: Country;
   club: Club;
 }
